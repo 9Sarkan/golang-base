@@ -1,0 +1,29 @@
+syntax="proto3";
+
+package base.pb;
+
+option go_package="github.com/9sarkan/golang-base/pkg/pb/justGRPCService.proto;justgrpcservice";
+
+import "google/protobuf/empty.proto";
+
+service ToDoList{
+    rpc Get(google.protobuf.Empty) returns (ToDoListResponse) {}
+    rpc Create(CreateToDoRequest) returns (ToDoSignleResponse) {}
+}
+
+message ToDoListResponse {
+    uint32 count = 1;
+    repeated ToDoSignleResponse data = 2;
+}
+
+message ToDoSignleResponse {
+    string id = 1;
+    string title = 2;
+    string createdAt = 3;
+    string body = 4;
+}
+
+message CreateToDoRequest {
+    string title = 1;
+    string body = 2;
+}
