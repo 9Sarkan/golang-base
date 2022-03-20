@@ -1,0 +1,12 @@
+service:
+  http:
+    host: "localhost"
+    port: 8081
+
+databases:
+  mongoDB:
+    host: "localhost"
+    port: 27017
+    username: "admin"
+    password: "password"
+    database: "base"

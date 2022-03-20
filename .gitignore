@@ -1,0 +1,9 @@
+# uncommend when config example and make file implemented
+# config.yaml
+# config.test.yaml
+vendor/
+logs/
+tmp
+.devcontainer/
+docker-compose-dev.yml
+.idea/
