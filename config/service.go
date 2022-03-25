@@ -1,10 +1,12 @@
 package config
 
 type Service struct {
-	HTTP HTTPServer `yaml:"http"`
+	GRPCServer HTTPServer `yaml:"grpcServer"`
+	HTTPServer HTTPServer `yaml:"httpServer"`
 }
 
 type HTTPServer struct {
-	Host string `yaml:"host"`
-	Port string `yaml:"port"`
+	Protocol string `yaml:"protocol"`
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
 }

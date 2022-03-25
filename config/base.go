@@ -9,9 +9,10 @@ import (
 var Map ConfigMap = ConfigMap{}
 
 type ConfigMap struct {
-	DebugMode bool     `yaml:"-"`
-	Service   Service  `yaml:"service"`
-	Databases Database `yaml:"databases"`
+	DebugMode       bool            `yaml:"-"`
+	Service         Service         `yaml:"service"`
+	Databases       Database        `yaml:"databases"`
+	AuthCreditional AuthCreditional `yaml:"authCreditional"`
 }
 
 func (cnf *ConfigMap) SetDebugMode(mode bool) {
