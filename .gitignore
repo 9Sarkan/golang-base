@@ -9,3 +9,4 @@ docker-compose-dev.yml
 .idea/
 # this directory contains auto generated files just as proto and swagger
 api/
+bin/
