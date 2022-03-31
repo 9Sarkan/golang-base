@@ -47,12 +47,7 @@ func (RouterCenter) InitialGrpcServer(ctx context.Context, cnf config.HTTPServer
 
 	reflection.Register(baseServer)
 
-	// log if server down
-	go func() {
-		log.Default().Fatalln(baseServer.Serve(listener))
-	}()
-
-	return nil
+	return baseServer.Serve(listener)
 }
 
 func (RouterCenter) InitialHttpRouter(cnf config.HTTPServer) {}

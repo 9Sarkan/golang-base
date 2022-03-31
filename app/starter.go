@@ -2,8 +2,8 @@ package app
 
 import (
 	"context"
-	"log"
-	"time"
+	"fmt"
+	"sync"
 
 	"github.com/9sarkan/golang-base/config"
 	"github.com/9sarkan/golang-base/pkg/middlewares"
@@ -18,11 +18,7 @@ func (app App) StartApplication(dbg bool, cfgPath string) error {
 	if err := config.Map.LoadFromFile(cfgPath); err != nil {
 		return err
 	}
-	log.Default().Println("config loaded.")
-	if err := app.StartServers(); err != nil {
-		return err
-	}
-	return nil
+	return app.StartServers()
 }
 
 // StartDatabases configure databases
@@ -32,10 +28,19 @@ func (app App) StartDatabases(cnf config.Database) error {
 
 func (app App) StartServers() error {
 	// start grpc server
+	var wg sync.WaitGroup
 	rc := RouterCenter{}
-	if err := rc.InitialGrpcServer(context.Background(), config.Map.Service.GRPCServer, middlewares.GRPCAuth, utils.PanicRecover); err != nil {
-		return err
-	}
-	time.Sleep(time.Hour)
+
+	wg.Add(1)
+	go func() {
+		if err := rc.InitialGrpcServer(context.Background(), config.Map.Service.GRPCServer, middlewares.GRPCAuth, utils.PanicRecover); err != nil {
+			// call service down notifiers
+			fmt.Printf("hello world")
+			utils.ServiceDownNotifier(err, "<internal grpc service>")
+		}
+		wg.Done()
+	}()
+
+	wg.Wait()
 	return nil
 }
