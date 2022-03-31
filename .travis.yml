@@ -1,0 +1,20 @@
+language: go
+services:
+  - docker
+go:
+  - "1.18"
+env:
+  global:
+    - CGO_ENABLED=0
+  matrix:
+    - SERVICE=base
+
+install: 
+  - go mod download
+  - go mod vendor
+
+scripts:
+  - go vet $(go list ./... | grep -v vendor)
+  - docker image build -t $SERVICE/$TRAVIS_BRANCH $SERVICE
+
+# after_success: 
