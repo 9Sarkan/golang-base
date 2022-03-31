@@ -3,7 +3,6 @@ package oauth
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log"
 
 	"github.com/9sarkan/golang-base/config"
@@ -37,7 +36,7 @@ func (a *AccessDetails) VerifyToken(ctx context.Context, request string) (*Acces
 			return jwt.ParseECPublicKeyFromPEM([]byte(config.Map.AuthCreditional.ECDSASecret))
 		}
 
-		log.Default().Println(fmt.Sprintf("unexpected signing method: %v", token.Header["alg"]))
+		log.Default().Printf("unexpected signing method: %v", token.Header["alg"])
 		return nil, errors.New("401 unauthorized")
 	})
 	if err != nil {
@@ -51,18 +50,18 @@ func (a *AccessDetails) VerifyToken(ctx context.Context, request string) (*Acces
 	if ok && token.Valid {
 		userID, ok := claims["sub"].(string)
 		if !ok {
-			log.Default().Println(fmt.Sprintf("error in get user sub from token: %v", claims))
+			log.Default().Printf("error in get user sub from token: %v", claims)
 			return nil, errors.New("401 unauthorized")
 		}
 
 		if _, err := uuid.Parse(userID); err != nil {
-			log.Default().Println(fmt.Sprintf("error in sub typo: %v", err))
+			log.Default().Printf("error in sub typo: %v", err)
 			return nil, errors.New("401 unauthorized")
 		}
 
 		dialer, ok := claims["mobile"].(string)
 		if !ok {
-			log.Default().Println(fmt.Sprintf("error in get user mobile from token: %v", claims))
+			log.Default().Printf("error in get user mobile from token: %v", claims)
 			return nil, errors.New("401 unauthorized")
 		}
 
